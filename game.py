@@ -47,6 +47,7 @@ figures_pos = [[(0, 0), (-2, 0), (-1, 0), (1, 0)],
                [(0, 0), (0, -1), (0, 1), (-1, -1)],
                [(0, 0), (0, -1), (0, 1), (1, -1)],
                [(0, 0), (0, -1), (0, 1), (-1, 0)]]
+
 figures = []
 for fig_pos in figures_pos:
     fg = []
@@ -57,13 +58,6 @@ for fig_pos in figures_pos:
 
 # color of the figures
 color = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
-
-# figure_rect is the rectangle that will be drawn on the screen
-figure_rect = pg.Rect(0, 0, square - 1, square - 1)
-figure = figures[random.randint(0, 6)]
-fig_color = color[figures.index(figure)]
-
-next_figure = figures[random.randint(0, 6)]
 
 # labels
 title_font_pixel = pg.font.Font(font_path, 60)
@@ -87,7 +81,7 @@ def run():
 
 
 def check():
-    global figure, fig_color, landed, next_figure
+    global figure, fig_color, landed, next_figure, next_figure_int
     for i in range(4):
         if figure[i].y == h - 1:
             landed = True
@@ -100,7 +94,8 @@ def check():
             field[figure[i].y][figure[i].x] = 1
         figure = next_figure
         fig_color = color[figures.index(figure)]
-        next_figure = figures[random.randint(0, 6)]
+        next_figure_int = next_int(figure_int)
+        next_figure = figures[next_figure_int]
         landed = False
 
 
@@ -217,6 +212,28 @@ def rotate():
     if not is_valid():
         figure = figure_old
 
+def next_int(figure_int):
+    check = 0
+    next_figure_int = random.randint(0, 6)
+    while check == 0:
+        if next_figure_int != figure_int:
+            check = 1
+            return next_figure_int
+        else:
+            next_figure_int = random.randint(0, 6)
+
+
+
+# figure_rect is the rectangle that will be drawn on the screen
+figure_rect = pg.Rect(0, 0, square - 1, square - 1)
+
+figure_int = random.randint(0, 6)
+figure = figures[figure_int]
+
+fig_color = color[figures.index(figure)]
+
+next_figure_int = next_int(figure_int)
+next_figure = figures[next_figure_int]
 
 # main loop
 
