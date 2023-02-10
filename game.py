@@ -59,29 +59,37 @@ for fig_pos in figures_pos:
 # color of the figures
 color = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 
-# labels
-title_font_pixel = pg.font.Font(font_path, 60)
-label_font_pixel1 = pg.font.Font(font_path, 35)
-label_font_pixel2 = pg.font.Font(font_path, 30)
-title_label = title_font_pixel.render("Tetris", True, (255, 255, 255))
-score_label = label_font_pixel1.render("Score :", True, (255, 255, 255))
-point_label = label_font_pixel2.render(str(score), True, (255, 255, 255))
-score_font_pixel = pg.font.Font(font_path, 26)
-highest_score_label = score_font_pixel.render("Highest Score :", True, (255, 255, 255))
-highest_score_data = label_font_pixel2.render(str(highest_score), True, (255, 255, 255))
-
 # function
 
 def run():
+
+    with open('score.txt') as f:
+        highest_score = f.read()
+
+    # labels
+    title_font_pixel = pg.font.Font(font_path, 60)
+    label_font_pixel1 = pg.font.Font(font_path, 35)
+    label_font_pixel2 = pg.font.Font(font_path, 30)
+    title_label = title_font_pixel.render("Tetris", True, (255, 255, 255))
+    score_label = label_font_pixel1.render("Score :", True, (255, 255, 255))
+    point_label = label_font_pixel2.render(str(score), True, (255, 255, 255))
+    score_font_pixel = pg.font.Font(font_path, 26)
+    highest_score_label = score_font_pixel.render("Highest Score :", True, (255, 255, 255))
+    highest_score_data = label_font_pixel2.render(str(highest_score), True, (255, 255, 255))
+    screen.blit(title_label, (w * square + 20, 20))
+    screen.blit(score_label, (w * square + 20, 430))
+    screen.blit(point_label, (w * square + 50, 490))
+    screen.blit(highest_score_label, (w * square + 20, 560))
+    screen.blit(highest_score_data, (w * square + 40, 600))
 
     draw()
     check()
     line()
     endgame()
 
-
 def check():
     global figure, fig_color, landed, next_figure, next_figure_int
+
     for i in range(4):
         if figure[i].y == h - 1:
             landed = True
@@ -94,7 +102,7 @@ def check():
             field[figure[i].y][figure[i].x] = 1
         figure = next_figure
         fig_color = color[figures.index(figure)]
-        next_figure_int = next_int(figure_int)
+        next_figure_int = next_int(next_figure_int)
         next_figure = figures[next_figure_int]
         landed = False
 
@@ -104,7 +112,6 @@ def draw():
     draw_field()
     draw_form()
     draw_field()
-    draw_labels()
     print_next_fig()
 
 def print_next_fig():
@@ -128,13 +135,6 @@ def draw_field():
                 figure_rect.y = y * square
                 pg.draw.rect(screen, (255, 255, 255), figure_rect)
 
-
-def draw_labels():
-    screen.blit(title_label, (w * square + 20, 20))
-    screen.blit(score_label, (w * square + 20, 430))
-    screen.blit(point_label, (w * square + 50, 490))
-    screen.blit(highest_score_label, (w * square + 20, 560))
-    screen.blit(highest_score_data, (w * square + 40, 600))
 
 
 def draw_form():
