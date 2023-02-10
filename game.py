@@ -147,12 +147,10 @@ def draw_form():
 def endgame():
     global field, running
     for x in range(w):
-        if field[0][x] == 1:
-            if score > int(highest_score):
-                with open('score.txt', 'w') as f:
-                    f.write(str(score))
+        if field[0][x] == 1 or field[1][x] == 1:
+            running = False
             break
-    pass
+    
 
 
 def line():
