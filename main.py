@@ -87,7 +87,6 @@ def game():
     # functions
 
     def draw():
-        screen.fill((0, 0, 0))
         draw_grid()
         draw_label()
         draw_field()
@@ -97,6 +96,7 @@ def game():
     def draw_label():
         screen.blit(title_label, (w * square + 20, 20))
         screen.blit(score_label, (w * square + 20, 430))
+        point_label = label_font_pixel2.render(str(score), True, (255, 255, 255))
         screen.blit(point_label, (w * square + 40, 490))
         screen.blit(highest_score_label, (w * square + 20, 560))
         screen.blit(highest_score_data, (w * square + 40, 600))
@@ -200,7 +200,6 @@ def game():
                 del field[i]
                 field.insert(0, [0 for i in range(w)])
                 score += 100
-                point_label = label_font_pixel2.render(str(score), True, (255, 255, 255))
                 print(score)
 
     def endgame():
@@ -217,6 +216,8 @@ def game():
     # game loop
     running = True
     while running:
+        screen.fill((0, 0, 0))
+        screen.fill((120,120,120), (w * square, 0, w * square * 1.7, h * square))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
