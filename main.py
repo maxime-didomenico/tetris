@@ -13,8 +13,8 @@ square = 36
 fps = 60
 screen_res = (w * square * 1.7, h * square)
 pygame.display.set_caption("Welcome to Tetris")
-icon = pygame.image.load('img/ico.png')
-pygame.display.set_icon(icon)
+#icon = pygame.image.load('img/ico.png')
+#pygame.display.set_icon(icon)
 screen = pygame.display.set_mode(screen_res)
 clock = pygame.time.Clock()
 last_drop = time.time()
@@ -73,17 +73,6 @@ def game():
         highest_score = f.read()
     score = 0
 
-    # labels
-    title_font_pixel = pygame.font.Font(font_path, 60)
-    label_font_pixel1 = pygame.font.Font(font_path, 35)
-    label_font_pixel2 = pygame.font.Font(font_path, 30)
-    title_label = title_font_pixel.render("Tetris", True, (255, 255, 255))
-    score_label = label_font_pixel1.render("Score :", True, (255, 255, 255))
-    point_label = label_font_pixel2.render(str(score), True, (255, 255, 255))
-    score_font_pixel = pygame.font.Font(font_path, 26)
-    highest_score_label = score_font_pixel.render("Highest Score :", True, (255, 255, 255))
-    highest_score_data = label_font_pixel2.render(str(highest_score), True, (255, 255, 255))
-
     # functions
 
     def draw():
@@ -93,13 +82,27 @@ def game():
         draw_form()
         draw_next_form()
         pygame.display.flip()
+
     def draw_label():
+        global score, highest_score
+
+        title_font_pixel = pygame.font.Font(font_path, 60)
+        label_font_pixel1 = pygame.font.Font(font_path, 35)
+        label_font_pixel2 = pygame.font.Font(font_path, 30)
+        title_label = title_font_pixel.render("Tetris", True, (255, 255, 255))
+        score_label = label_font_pixel1.render("Score :", True, (255, 255, 255))
+        point_label = label_font_pixel2.render(str(score), True, (255, 255, 255))
+        score_font_pixel = pygame.font.Font(font_path, 26)
+        highest_score_label = score_font_pixel.render("Highest Score :", True, (255, 255, 255))
+        highest_score_data = label_font_pixel2.render(str(highest_score), True, (255, 255, 255))
+
         screen.blit(title_label, (w * square + 20, 20))
         screen.blit(score_label, (w * square + 20, 430))
         point_label = label_font_pixel2.render(str(score), True, (255, 255, 255))
         screen.blit(point_label, (w * square + 40, 490))
         screen.blit(highest_score_label, (w * square + 20, 560))
         screen.blit(highest_score_data, (w * square + 40, 600))
+
     def draw_grid():
         for x in range(w):
             for y in range(h):
@@ -124,6 +127,7 @@ def game():
                     figure_rect.x = x * square
                     figure_rect.y = y * square
                     pygame.draw.rect(screen, color[int(field[y][x]-1)], figure_rect)
+    
     def update_field():
         for i in range(4):
             field[figure[i].y][figure[i].x] = color.index(figure_color) + 1
@@ -194,13 +198,16 @@ def game():
                 return
 
     def line():
-        global score
+        global score, highest_score
         for i in range(h):
             if 0 not in field[i]:
                 del field[i]
                 field.insert(0, [0 for i in range(w)])
                 score += 100
-                print(score)
+                if score > int(highest_score):
+                    with open("score.txt", "w") as file:
+                        file.write(str(score))
+                    highest_score = score
 
     def endgame():
         for x in range(w):
