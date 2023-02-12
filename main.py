@@ -13,8 +13,8 @@ square = 36
 fps = 60
 screen_res = (w * square * 1.7, h * square)
 pygame.display.set_caption("Welcome to Tetris")
-#icon = pygame.image.load('img/ico.png')
-#pygame.display.set_icon(icon)
+icon = pygame.image.load('img/ico.png')
+pygame.display.set_icon(icon)
 screen = pygame.display.set_mode(screen_res)
 clock = pygame.time.Clock()
 last_drop = time.time()
